@@ -1,40 +1,40 @@
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { TaskDetails } from '../api/types'; // Import the generated API types
+import { TaskDetails } from '../api/types';
+import { getTasks } from '../api/tasks';
 
 const TaskAssignmentScreen: React.FC = () => {
   const [tasks, setTasks] = useState<TaskDetails[]>([]);
 
   useEffect(() => {
-    // Fetch tasks from the backend API
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch('/tasks');
-        const data = await response.json();
-        setTasks(data);
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
-      }
-    };
-
     fetchTasks();
   }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await getTasks();
+      setTasks(response);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  const renderTaskItem = ({ item }: { item: TaskDetails }) => (
+    <View>
+      <Text>{item.taskName}</Text>
+      <Text>{item.description}</Text>
+      {/* Render other task details */}
+    </View>
+  );
 
   return (
     <View>
       <Text>Task Assignment Screen</Text>
       <FlatList
         data={tasks}
-        keyExtractor={(task) => task.taskId}
-        renderItem={({ item }) => (
-          <View>
-            <Text>Task ID: {item.taskId}</Text>
-            <Text>Assigned To: {item.assignedTo}</Text>
-            <Text>Status: {item.status}</Text>
-            <Text>Comments: {item.comments}</Text>
-          </View>
-        )}
+        renderItem={renderTaskItem}
+        keyExtractor={(item) => item.taskId}
       />
     </View>
   );
