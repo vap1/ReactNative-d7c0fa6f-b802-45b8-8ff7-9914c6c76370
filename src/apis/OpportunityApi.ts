@@ -12,46 +12,27 @@ export interface Opportunity {
   documents: string;
 }
 
-export interface CreateOpportunityRequest {
-  leadId: string;
-  assignedTo: string;
-  status: string;
-  notes: string;
-  documents: string;
+export interface UserRegistrationResponse {
+  success: boolean;
+  errorMessage?: string;
 }
 
-export interface UpdateOpportunityRequest {
-  opportunityId: string;
-  assignedTo: string;
-  status: string;
-  notes: string;
-  documents: string;
-}
-
-export async function createOpportunity(
-  request: CreateOpportunityRequest
-): Promise<Opportunity> {
-  try {
-    const response = await axios.post<Opportunity>(
-      `${BASE_URL}/opportunities`,
-      request
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to create opportunity');
+export class OpportunityApi {
+  static async createOpportunity(opportunity: Opportunity): Promise<UserRegistrationResponse> {
+    try {
+      const response = await axios.post(`${BASE_URL}/opportunities`, opportunity);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to create opportunity');
+    }
   }
-}
 
-export async function updateOpportunity(
-  request: UpdateOpportunityRequest
-): Promise<Opportunity> {
-  try {
-    const response = await axios.put<Opportunity>(
-      `${BASE_URL}/opportunities/${request.opportunityId}`,
-      request
-    );
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to update opportunity');
+  static async updateOpportunity(opportunityId: string, updatedOpportunity: Opportunity): Promise<UserRegistrationResponse> {
+    try {
+      const response = await axios.put(`${BASE_URL}/opportunities/${opportunityId}`, updatedOpportunity);
+      return response.data;
+    } catch (error) {
+      throw new Error('Failed to update opportunity');
+    }
   }
 }
