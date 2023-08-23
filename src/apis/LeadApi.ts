@@ -38,6 +38,4 @@ export class LeadApi {
       throw new Error(error.response?.data?.errorMessage || 'Failed to update lead');
     }
   }
-
-  // Add more API methods for lead management as needed
 }
