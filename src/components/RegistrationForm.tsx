@@ -3,18 +3,18 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Alert } from 'react-native';
 
 interface RegistrationFormProps {
-  onSubmit: (username: string, password: string, email: string, role: string) => void;
+  onRegister: (username: string, password: string, email: string, role: string) => void;
 }
 
-const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSubmit }) => {
+const RegistrationForm: React.FC<RegistrationFormProps> = ({ onRegister }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
 
-  const handleRegistration = () => {
+  const handleRegister = () => {
     if (username && password && email && role) {
-      onSubmit(username, password, email, role);
+      onRegister(username, password, email, role);
     } else {
       Alert.alert('Error', 'Please fill in all fields');
     }
@@ -43,7 +43,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSubmit }) => {
         value={role}
         onChangeText={setRole}
       />
-      <Button title="Register" onPress={handleRegistration} />
+      <Button title="Register" onPress={handleRegister} />
     </View>
   );
 };
